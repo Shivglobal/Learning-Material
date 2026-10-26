@@ -1,0 +1,53 @@
+
+1. System Basics & Baseline Capturing
+
+bash
+# List all available network interfaces
+sudo tcpdump -D
+
+# Capture live traffic on all interfaces
+sudo tcpdump -i any
+
+# Capture exactly 10 packets on interface eth0 and stop
+sudo tcpdump -i eth0 -c 10
+
+2. Filtering by Protocol or Port
+
+# Capture only ICMP traffic (like ping requests)
+sudo tcpdump -i any icmp
+
+# Capture traffic on a specific port (e.g., HTTP port 80)
+sudo tcpdump -i any port 80
+
+# Capture only UDP traffic on a specific port (e.g., DNS port 53)
+sudo tcpdump -i any udp port 53
+
+
+3. Filtering by Host IP
+
+# Capture packets going to or from a specific IP address
+sudo tcpdump -i any host 192.168.1.50
+
+# Capture traffic where the source IP is specifically 192.168.1.50
+sudo tcpdump -i any src host 192.168.1.50
+
+# Capture traffic where the destination IP is specifically 192.168.1.50
+sudo tcpdump -i any dst host 192.168.1.50
+
+4. Combining Filters (Logical Operators)
+
+# Capture traffic from a specific host that is ALSO targeting port 443 (HTTPS)
+sudo tcpdump -i any 'src host 192.168.1.50 and port 443'
+
+# Capture traffic on port 80 or port 443, but exclude a specific host
+sudo tcpdump -i any '(port 80 or port 443) and not host 192.168.1.99'
+
+
+5. Saving and Loading PCAP Files
+
+bash
+# Capture traffic on eth0, don't resolve names, and save to output.pcap
+sudo tcpdump -i eth0 -n -w output.pcap
+
+# Read the saved packet capture back onto your terminal screen
+tcpdump -r output.pcap
